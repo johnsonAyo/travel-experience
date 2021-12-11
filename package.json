@@ -1,16 +1,52 @@
 {
-  "name": "travel-log-app",
+  "name": "week5-009",
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "serve": "node lib/app",
+    "start": "yarn tsc && yarn serve",
+    "dev": "yarn tsc && nodemon lib/app",
+    "test": "jest",
+    "compile:watch": "yarn tsc -w"
   },
   "dependencies": {
+    "@types/dotenv": "^8.2.0",
+    "@types/jsonwebtoken": "^8.5.6",
+    "bcryptjs": "^2.4.3",
+    "btoa": "^1.2.1",
+    "connect-flash": "^0.1.1",
     "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
     "debug": "~2.6.9",
-    "express": "~4.16.1",
+    "dotenv": "^10.0.0",
+    "ejs": "^3.1.3",
+    "ejs-layouts": "^0.0.1",
+    "express": "^4.17.1",
+    "express-ejs-layouts": "^2.5.1",
+    "express-session": "^1.17.2",
+    "http-error": "^0.0.6",
     "http-errors": "~1.6.3",
-    "jade": "~1.11.0",
-    "morgan": "~1.9.1"
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.0.13",
+    "morgan": "~1.9.1",
+    "passport": "^0.5.0",
+    "passport-local": "^1.0.0",
+    "supertest": "^6.1.6",
+    "typescript": "^4.5.2"
+  },
+  "devDependencies": {
+    "@types/btoa": "^1.2.3",
+    "@types/cookie-parser": "^1.4.2",
+    "@types/cors": "^2.8.12",
+    "@types/express": "^4.17.13",
+    "@types/express-ejs-layouts": "^2.5.0",
+    "@types/http-errors": "^1.8.1",
+    "@types/jest": "^27.0.3",
+    "@types/morgan": "^1.9.3",
+    "@types/node": "^16.11.9",
+    "@types/supertest": "^2.0.11",
+    "jest": "^27.3.1",
+    "nodemon": "^2.0.15",
+    "ts-jest": "^27.0.7"
   }
 }
