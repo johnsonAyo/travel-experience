@@ -1,37 +1,111 @@
-import createError, { HttpError } from "http-errors";
-import express, { NextFunction, Request, Response } from "express";
-import path from "path";
-import cookieParser from "cookie-parser";
-import logger from "morgan";
-import cors from "cors";
+import createError, { HttpError } from 'http-errors';
+import express, { NextFunction, Request, Response } from 'express';
+import path from 'path';
+import cookieParser from 'cookie-parser';
+import logger from 'morgan';
+import cors from 'cors';
+const  passport = require('passport');;
+const exphbs = require("express-handlebars") 
+import { connect, mongoose } from './config/db';
+import dotenv from 'dotenv';
+import morgan from 'morgan';
+const session = require('express-session')
 const app = express();
+import indexRouter from "./routes/index";
+import authRoute from "./routes/auth";
+import travelRoute from "./routes/travels";
+const MongoStore = require('connect-mongo')(session)
 
-//db config
+dotenv.config({ path: './config.env' });
+
+require('./config/passport')(passport)
+
 
 // view engine setup
-app.set("views", path.join(__dirname, "/../views"));
-app.set("view engine", "ejs");
+app.set('view engine', 'hbs');
+app.set('views', path.join(__dirname, '/../views'));
 
-app.use(logger("dev"));
 
-app.use(cors({
-  origin: ['https://customer-care10.herokuapp.com/', 'http://localhost:5001/'],
-  methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH']
-}));
 
+
+
+app.use(
+  cors({
+    origin: [
+      'https://customer-care10.herokuapp.com/',
+      'http://localhost:5001/',
+    ],
+    methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH'],
+  })
+);
+
+// Handlebars Helpers
+const {
+  formatDate,
+  stripTags,
+  truncate,
+  editIcon,
+  select,
+} = require('./helpers/hbs')
+
+// Handlebars
+app.engine(
+  '.hbs',
+  exphbs.engine({
+    helpers: {
+      editIcon,
+      formatDate,
+      stripTags,
+      truncate,
+      select,
+    },
+    defaultLayout: 'main',
+    extname: '.hbs',
+    layoutsDir: path.join(__dirname, '/../views/layouts')
+  })
+)
+app.set('view engine', 'hbs')
+
+// sesssion middleware
+
+
+//passport middleware
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "/../public")));
+app.use(express.static(path.join(__dirname, '/../public')));
+
+app.use(
+  session({
+    secret: 'keyboard cat',
+    saveUninitialized: false,
+    resave: false,
+    store: new MongoStore({ mongooseConnection: mongoose.connection}),
+  })
+)
+
+app.use(passport.initialize());
+
+app.use(passport.session());
+
+app.use(function (req:any, res, next) {
+  res.locals.user = req.user || null
+  next()
+})
 
 
+app.use("/", indexRouter);
+app.use("/auth", authRoute)
+app.use("/travels", travelRoute)
 
+app.use(logger('dev'));
+app.use(morgan('dev'));
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
 });
- 
+
 // error handler
 app.use(function (
   err: HttpError,
@@ -39,22 +113,15 @@ app.use(function (
   res: Response,
   next: NextFunction
 ) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : {};
+
 
   // render the error page
   res.status(err.status || 500);
   res.send(err);
 });
 
+const PORT = process.env.PORT || 4000;
+connect();
+app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
 
-const PORT = process.env.PORT || 3000;
-
-
-app.listen(PORT, () => {
-  // tslint:disable-next-line:no-console
-  console.log(`Server is listening on port ${PORT}...`);
-});
-
-export default app
+export default app;
