@@ -19,7 +19,7 @@ module.exports = function (passport: { use: (arg0: any) => void; serializeUser: 
                 image: profile.photos[0].value,
               }
               try {
-                let user = await User.findOne({ googleId: profile.id })
+                let user = await User.findOne({ googleId: profile.id,  })
       
                 if (user) {
                   done(null, user)

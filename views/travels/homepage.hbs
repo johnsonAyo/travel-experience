@@ -1,14 +1,12 @@
 <div class="header"> 
-   <h3>Travels Logs</h3> <a  href="/auth/logout" class="waves-effect waves-light btn-large"><i class="material-icons right"></i>SignOut</a>
+   <h3>Travels Logs</h3> <a  href="/login" class="waves-effect waves-light btn-large"><i class="material-icons right"></i>SignUp / signIn</a>
 </div> 
  <div class="wrapper">
         {{#each travels}}
         <div class="col s12 m4">
           <div class="card pageDisplay">
             <div class="card-image">
-                 {{{editIcon user ../user _id}}}
               <img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Ikogosi_warm_spring_05.jpg" height="300px">
-              {{!-- <span class="card-title"> {{travels.notes}} </span> --}}
             </div>
              <div class="card-content center-align">
              <h5>{{title}}</h5>

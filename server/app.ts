@@ -4,29 +4,29 @@ import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import cors from 'cors';
-const  passport = require('passport');;
-const exphbs = require("express-handlebars") 
+const passport = require('passport');
+const exphbs = require('express-handlebars');
 import { connect, mongoose } from './config/db';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
-const session = require('express-session')
+const methodOverride = require('method-override');
+const session = require('express-session');
 const app = express();
-import indexRouter from "./routes/index";
-import authRoute from "./routes/auth";
-import travelRoute from "./routes/travels";
-const MongoStore = require('connect-mongo')(session)
+import indexRouter from './routes/index';
+import authRoute from './routes/auth';
+import travelRoute from './routes/travels';
+const MongoStore = require('connect-mongo')(session);
+const multer = require('multer')
 
 dotenv.config({ path: './config.env' });
 
-require('./config/passport')(passport)
-
+require('./config/passport')(passport);
 
 // view engine setup
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, '/../views'));
 
-
-
+const uploads = multer({ dest: 'public/images/users' });
 
 
 app.use(
@@ -46,7 +46,7 @@ const {
   truncate,
   editIcon,
   select,
-} = require('./helpers/hbs')
+} = require('./helpers/hbs');
 
 // Handlebars
 app.engine(
@@ -61,13 +61,13 @@ app.engine(
     },
     defaultLayout: 'main',
     extname: '.hbs',
-    layoutsDir: path.join(__dirname, '/../views/layouts')
+    layoutsDir: path.join(__dirname, '/../views/layouts'),
   })
-)
-app.set('view engine', 'hbs')
+);
+app.set('view engine', 'hbs');
 
 // sesssion middleware
-
+// Method override
 
 //passport middleware
 
@@ -77,27 +77,37 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '/../public')));
 
 app.use(
+  methodOverride(function (req: Request, res: Response) {
+    if (req.body && typeof req.body === 'object' && '_method' in req.body) {
+      // look in urlencoded POST bodies and delete it
+      let method = req.body._method;
+      delete req.body._method;
+      return method;
+    }
+  })
+);
+
+app.use(
   session({
     secret: 'keyboard cat',
     saveUninitialized: false,
     resave: false,
-    store: new MongoStore({ mongooseConnection: mongoose.connection}),
+    store: new MongoStore({ mongooseConnection: mongoose.connection }),
   })
-)
+);
 
 app.use(passport.initialize());
 
 app.use(passport.session());
 
-app.use(function (req:any, res, next) {
-  res.locals.user = req.user || null
-  next()
-})
+app.use(function (req: any, res, next) {
+  res.locals.user = req.user || null;
+  next();
+});
 
-
-app.use("/", indexRouter);
-app.use("/auth", authRoute)
-app.use("/travels", travelRoute)
+app.use('/', indexRouter);
+app.use('/auth', authRoute);
+app.use('/travels', travelRoute);
 
 app.use(logger('dev'));
 app.use(morgan('dev'));
@@ -113,8 +123,6 @@ app.use(function (
   res: Response,
   next: NextFunction
 ) {
-
-
   // render the error page
   res.status(err.status || 500);
   res.send(err);

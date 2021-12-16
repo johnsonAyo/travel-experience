@@ -23,13 +23,13 @@ const TravelSchema = new mongoose.Schema({
     required: true,
   },
   visitDate: {
-    required: true,
+    // required: true,
     type: Date,
   },
   status: {
     type: String,
-    default: 'public',
-    enum: ['public', 'private'],
+    enum: ['public', 'private'], // Private
+    default: 'private',
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,
