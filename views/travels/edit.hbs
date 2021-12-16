@@ -1,3 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google Maps JavaScript library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyDZi6ccMsOVnXl-MSRabXnIQ8I9fxwIP3c"></script>
+    <title>Travel Log</title>
+</head>
+<body>
 <h3>Edit Your Travel Stories</h3>
 <div class="row">
     <form action="/travels/{{travel._id}}"  method="post" class="col s12">
@@ -67,3 +79,23 @@
         </div>
     </form>
 </div>
+
+<script>
+    let searchInput = 'location';
+    
+// window.onload 
+
+$(document).ready(() => {
+    let autocomplete;
+    autocomplete = new google.maps.places.Autocomplete(document.getElementById(searchInput), {
+        types: ['geocode'],
+    });
+    google.maps.event.addListener(autocomplete, 'place_changed', () => {
+        let place = autocomplete.getPlace();
+        {{!-- console.log(place) --}}
+    });
+});
+
+</script>
+</body>
+</html>
