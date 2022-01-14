@@ -3,13 +3,17 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "serve": "node lib/app",
-    "start": " cross-env NODE_ENV=production yarn tsc && yarn serve",
-    "dev": "  cross-env NODE_ENV= yarn tsc && nodemon lib/app",
+    "serve": "node lib/server",
+    "start": "node lib/server",
+    "build": "tsc",
+    "dev": "nodemon lib/server",
     "test": "jest",
-    "compile:watch": "yarn tsc -w"
-  },
+    "compile:watch": "yarn tsc -w",
+    "heroku-postbuild": "yarn run build" 
+},
+"postinstall": "tsc && mv -i -v public lib/ && rm -v -rf server",
   "dependencies": {
+    "@types/bson": "^4.2.0",
     "@types/dotenv": "^8.2.0",
     "@types/jsonwebtoken": "^8.5.6",
     "bcrypt": "^5.0.1",
@@ -27,6 +31,7 @@
     "http-error": "^0.0.6",
     "http-errors": "~1.6.3",
     "jsonwebtoken": "^8.5.1",
+    "materialize-css": "^1.0.0",
     "method-override": "^3.0.0",
     "moment": "^2.29.1",
     "mongoose": "^6.1.1",

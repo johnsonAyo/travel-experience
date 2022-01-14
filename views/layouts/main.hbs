@@ -9,14 +9,21 @@
         integrity="sha256-46r060N2LrChLLb5zowXQ72/iKKNiw/lAmygmHExk/o=" crossorigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Amatic+SC&family=Inconsolata:wght@600&family=Indie+Flower&family=Lato:wght@300;400&family=M+PLUS+Code+Latin:wght@300&family=Yuji+Syuku&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/stylesheets/style.css">
-    <title>StoryBooks</title>
+    <link rel="icon" 
+      type="image/png" 
+      href="http://example.com/myicon.png">
+    <title>Travel logs</title>
 </head>
 
 <body>
     {{> _header}}
     {{> _add_btn}}
     <div class="container">
+         <div class="card">
+            <div class="card-content">
         {{{body}}}
+             </div>
+        </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>

@@ -13,18 +13,22 @@ font-family: 'Yuji Syuku', serif;
 }
    
 h3{
-  color: white
+  color: rgb(10, 10, 10)
 }
 p {
     margin: 10px 0 !important;
   }
   
-  .login-container {
+  /* .login-container {
     width: 500px;
     margin-top: 50px;
     text-align: center;
-  }
+  } */
 
+
+#delete-form{
+  display: flex 
+}
   .container{
     margin: auto;
   }
@@ -47,7 +51,7 @@ p {
     }
 
   .card{
-    background-color:rgb(243, 230, 158)
+    background-color:rgb(240, 229, 157)
   }
   
   .fa-small {
@@ -57,6 +61,11 @@ p {
   .btn-float {
     float: left;
     margin-right: 10px;
+  }
+
+  .large{
+    height: 600px !important;
+
   }
   
   .img-small {
