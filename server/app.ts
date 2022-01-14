@@ -16,7 +16,6 @@ import indexRouter from './routes/index';
 import authRoute from './routes/auth';
 import travelRoute from './routes/travels';
 const MongoStore = require('connect-mongo')(session);
-const multer = require('multer')
 
 dotenv.config({ path: './config.env' });
 
@@ -26,14 +25,12 @@ require('./config/passport')(passport);
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, '/../views'));
 
-const uploads = multer({ dest: 'public/images/users' });
 
 
 app.use(
   cors({
     origin: [
-      'https://customer-care10.herokuapp.com/',
-      'http://localhost:5001/',
+      'http://localhost:4000/',
     ],
     methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH'],
   })

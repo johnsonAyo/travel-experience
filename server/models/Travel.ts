@@ -15,7 +15,7 @@ const TravelSchema = new mongoose.Schema({
     required: true,
   },
   images: {
-    type: String,
+    type: [String],
     required: false,
   },
   notes: {
@@ -23,7 +23,7 @@ const TravelSchema = new mongoose.Schema({
     required: true,
   },
   visitDate: {
-    // required: true,
+    required: true,
     type: Date,
   },
   status: {
