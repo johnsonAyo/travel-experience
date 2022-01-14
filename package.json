@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "serve": "node lib/server",
-    "start": "node lib/server",
+    "serve": "node lib/app",
+    "start": "node lib/app",
     "build": "tsc",
     "dev": "nodemon lib/server",
     "test": "jest",
