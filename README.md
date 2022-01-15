@@ -1,8 +1,8 @@
-# travel-log-app
+
 
  
 
-Travel exprience APP 
+ # Travel exprience APP 
 
  Travel experience  app creates an avenue to write about trips you have taken, what you learned during and the experiences you had. It is a collection of adventures, stories, memories and discovery   
 
