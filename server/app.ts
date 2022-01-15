@@ -4,18 +4,19 @@ import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import cors from 'cors';
-const passport = require('passport');
-const exphbs = require('express-handlebars');
 import { connect, mongoose } from './config/db';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
-const methodOverride = require('method-override');
-const session = require('express-session');
-const app = express();
 import indexRouter from './routes/index';
 import authRoute from './routes/auth';
 import travelRoute from './routes/travels';
+
+const methodOverride = require('method-override');
+const session = require('express-session');
+const app = express();
 const MongoStore = require('connect-mongo')(session);
+const passport = require('passport');
+const exphbs = require('express-handlebars');
 
 dotenv.config({ path: './config.env' });
 

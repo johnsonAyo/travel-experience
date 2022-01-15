@@ -1,14 +1,14 @@
-import express, { NextFunction, Request, Response } from "express";
-import path from "path";
+import express, { NextFunction, Request, Response } from 'express';
+import path from 'path';
 const router = express.Router(),
-  multer = require("multer");
-const { ensureAuth } = require("../middleware/auth");
+  multer = require('multer');
+import { ensureAuth } from '../middleware/auth';
 
-const Travel = require("../models/Travel");
+import Travel from '../models/Travel';
 
 // Storage setup
-var storage = multer.diskStorage({
-  destination: "./public/uploads/",
+const storage = multer.diskStorage({
+  destination: './public/uploads/',
   filename: function (
     _req: any,
     file: { fieldname: string; originalname: any },
@@ -16,7 +16,7 @@ var storage = multer.diskStorage({
   ) {
     done(
       null,
-      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+      file.fieldname + '-' + Date.now() + path.extname(file.originalname)
     );
   },
 });
@@ -27,7 +27,7 @@ var upload = multer({
   limits: {
     fileSize: 3000000,
   },
-}).array("images");
+}).array('images');
 
 // Check file type
 function checkFileType(
@@ -49,33 +49,33 @@ function checkFileType(
 
 // @desc    Show add page
 // @route   GET /travels/add
-router.get("/add", ensureAuth, (_req, res) => {
-  res.render("travels/add");
+router.get('/add', ensureAuth, (_req, res) => {
+  res.render('travels/add');
 });
 
 // @desc    Process add form
 // @route   POST /travels
-router.post("/", ensureAuth, async (req: any, res) => {
+router.post('/', ensureAuth, async (req: any, res) => {
   try {
     upload(req, res, async function (err: { message: any }) {
       if (err) {
         console.error(err);
-        return res.render("error/500");
+        return res.render('error/500');
       }
 
       const travel = req.body;
       travel.user = req.user.id;
       travel.images = [];
       req.files.forEach((file: { filename: any }) =>
-        travel.images.push("/uploads/" + file.filename)
+        travel.images.push('/uploads/' + file.filename)
       );
 
       await Travel.create(travel);
-      res.redirect("/dashboard");
+      res.redirect('/dashboard');
     });
   } catch (err) {
     console.error(err);
-    res.render("error/500");
+    res.render('error/500');
   }
 });
 
@@ -85,69 +85,68 @@ router.post("/", ensureAuth, async (req: any, res) => {
 // @desc    Show single travel
 // @route   GET /travels/:id
 
-router.get("/:id", ensureAuth, async (req: any, res) => {
+router.get('/:id', ensureAuth, async (req: any, res) => {
   try {
-    let travel = await Travel.findById(req.params.id).populate("user").lean();
+    let travel = await Travel.findById(req.params.id).populate('user').lean();
     if (!travel) {
-      return res.render("error/404");
+      return res.render('error/404');
     }
 
-    if (travel.user._id != req.user.id && travel.status == "private") {
-      res.render("error/404");
+    if (travel.user._id != req.user.id && travel.status == 'private') {
+      res.render('error/404');
     } else {
-      res.render("travels/show", {
+      res.render('travels/show', {
         travel,
         user: req.user,
       });
     }
   } catch (err) {
     console.error(err);
-    res.render("error/404");
+    res.render('error/404');
   }
 });
 
 // @desc    Show edit page
 // @route   GET /travels/edit/:id
-router.get("/edit/:id", ensureAuth, async (req: any, res) => {
+router.get('/edit/:id', ensureAuth, async (req: any, res) => {
   try {
     const travel = await Travel.findOne({
       _id: req.params.id,
     }).lean();
 
     if (!travel) {
-      return res.render("error/404");
+      return res.render('error/404');
     }
 
     if (travel.user != req.user.id) {
-      res.redirect("/travels");
+      res.redirect('/travels');
     } else {
-      res.render("travels/edit", {
+      res.render('travels/edit', {
         travel,
       });
     }
   } catch (err) {
     console.error(err);
-    return res.render("error/500");
+    return res.render('error/500');
   }
 });
 
-
 // @desc    Update travels
 // @route   PUT /travels/:id
-router.post("/:id", ensureAuth, async (req: any, res) => {
+router.post('/:id', ensureAuth, async (req: any, res) => {
   try {
     let travel = await Travel.findById(req.params.id).lean();
     if (!travel) {
-      return res.render("error/404");
+      return res.render('error/404');
     }
 
     if (travel.user != req.user.id) {
-      res.redirect("/travels");
+      res.redirect('/travels');
     } else {
       upload(req, res, async function (err: { message: any }) {
         if (err) {
           console.error(err);
-          return res.render("error/500");
+          return res.render('error/500');
         }
 
         const newTravel = req.body;
@@ -155,67 +154,65 @@ router.post("/:id", ensureAuth, async (req: any, res) => {
         const images: string[] = [];
         if (req.files && req.files.length > 0) {
           req.files.forEach((file: { filename: any }) =>
-            images.push("/uploads/" + file.filename)
+            images.push('/uploads/' + file.filename)
           );
         }
         if (images.length > 0) newTravel.images = images;
 
-        await Travel.findOneAndUpdate({ _id: req.params.id }, newTravel,
-          {
-            new: true,
-            runValidators: true,
-          });
-        res.redirect("/dashboard");
+        await Travel.findOneAndUpdate({ _id: req.params.id }, newTravel, {
+          new: true,
+          runValidators: true,
+        });
+        res.redirect('/dashboard');
       });
     }
   } catch (err) {
     console.error(err);
-    return res.render("error/500");
+    return res.render('error/500');
   }
 });
 
 // @desc    Delete travel logs
 // @route   DELETE /travels/:id
-router.delete("/:id", ensureAuth, async (req: any, res) => {
+router.delete('/:id', ensureAuth, async (req: any, res) => {
   try {
     let travel = await Travel.findById(req.params.id).lean();
 
     if (!travel) {
-      return res.render("error/404");
+      return res.render('error/404');
     }
 
     if (travel.user != req.user.id) {
-      res.redirect("/travels");
+      res.redirect('/travels');
     } else {
       await Travel.deleteOne({ _id: req.params.id });
-      res.redirect("/dashboard");
+      res.redirect('/dashboard');
     }
   } catch (err) {
     console.error(err);
-    return res.render("error/500");
+    return res.render('error/500');
   }
 });
 
 // @desc    User travels
 // @route   GET /travels/user/:userId
-router.get("/user/:userId",ensureAuth, async (req:any, res) => {
+router.get('/user/:userId', ensureAuth, async (req: any, res) => {
   try {
     const travels = await Travel.find({
       user: req.params.userId,
-      status: "public",
+      status: 'public',
     })
-      .populate("user")
+      .populate('user')
       .lean();
 
-    res.render("travels/index", {
+    res.render('travels/index', {
       travels,
       user: req.user,
     });
   } catch (err) {
     console.error(err);
-    res.render("error/500");
+    res.render('error/500');
   }
 });
-
 
 export default router;

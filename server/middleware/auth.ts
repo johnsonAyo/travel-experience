@@ -1,5 +1,5 @@
-import express, { NextFunction, Request as any, Response } from "express";
-import { Secret, verify } from "jsonwebtoken";
+import express, { NextFunction, Request as any, Response } from 'express';
+import { Secret, verify } from 'jsonwebtoken';
 const authenticate = (req: any, res: any) => {
   try {
     const accessToken = req.cookies.accessToken;
@@ -18,25 +18,25 @@ const authenticate = (req: any, res: any) => {
     return false;
   }
 };
-module.exports = {
-  ensureAuth: function (req: any, res: Response, next: NextFunction) {
-    if (req.isAuthenticated()) {
-      return next();
-    } else if (authenticate(req, res)) {
-      return next();
-    } else {
-      return res.redirect("/");
-    }
-  },
-  ensureGuest: function (req: any, res: Response, next: NextFunction) {
-    authenticate(req, res);
-    if (!req.isAuthenticated()) {
-      return next();
-    } else if (!authenticate(req, res)) {
-      return next();
-    } else {
-      res.redirect("/dashboard");
-    }
-  },
+const ensureAuth = function (req: any, res: Response, next: NextFunction) {
+  if (req.isAuthenticated()) {
+    return next();
+  } else if (authenticate(req, res)) {
+    return next();
+  } else {
+    return res.redirect('/');
+  }
 };
 
+const ensureGuest = function (req: any, res: Response, next: NextFunction) {
+  authenticate(req, res);
+  if (!req.isAuthenticated()) {
+    return next();
+  } else if (!authenticate(req, res)) {
+    return next();
+  } else {
+    res.redirect('/dashboard');
+  }
+};
+
+export {ensureGuest, ensureAuth}
