@@ -32,25 +32,14 @@ Set visibility of  travel logs (private or public)
 
 # Technologies  
 
-Frontend  
+Frontend  - Javascript-template-engine (hbs) 
 
- Javascript-template-engine (hbs) 
+Backend  -Node/express.js  typescript 
 
+Database  -MongoDB  
   
 
-Backend  
-
- Node/express.js  typescript 
-
- 
- 
-
-Database  
-
-MongoDB  
-  
-
-#User Stories  
+# User Stories  
 
  
 Registered User 
@@ -61,7 +50,7 @@ Registered User
 
  can edit/ delete/update  my travel log 
 
-can comment and like any post 
+ can comment and like any post 
 
  can upload photos or add google photos album link to a travel log  entry.  
 
