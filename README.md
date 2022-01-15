@@ -1,14 +1,10 @@
-
-
- 
-
  # Travel exprience APP 
 
  Travel experience  app creates an avenue to write about trips you have taken, what you learned during and the experiences you had. It is a collection of adventures, stories, memories and discovery   
 
    
 
-USERS   
+# USERS   
 
 Registered users 
 
@@ -17,7 +13,7 @@ Unregistered Users
   
   
 
-Features  
+# Features  
 
 The home page that displays all travel logs created by registered users. 
 
@@ -34,11 +30,11 @@ Set visibility of  travel logs (private or public)
   
   
 
-Technologies  
+# Technologies  
 
 Frontend  
 
-     Javascript-template-engine (hbs) 
+ Javascript-template-engine (hbs) 
 
   
 
@@ -54,7 +50,7 @@ Database
 MongoDB  
   
 
-User Stories  
+#User Stories  
 
  
 Registered User 
