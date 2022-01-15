@@ -1,7 +1,7 @@
 import express, { NextFunction, Request, Response } from "express";
 const router = express.Router();
 import { hash, compare } from "bcryptjs";
-const User = require("../models/User");
+import User from "../models/User";
 import { createAccessToken, createRefreshToken } from "../config/token";
 
 const registerUser = async function (

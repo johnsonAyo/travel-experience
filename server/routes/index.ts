@@ -1,8 +1,7 @@
 import express, { NextFunction, Request, Response } from "express";
 const router = express.Router();
-const { ensureAuth, ensureGuest } = require("../middleware/auth");
-const Travel = require("../models/Travel");
-const User2 = require("../models/User2");
+import { ensureAuth, ensureGuest } from "../middleware/auth";
+import  Travel from "../models/Travel";
 import { registerUser, register, signin, loginUser } from "./service";
 
 // @desc    Login/Landing page
