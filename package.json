@@ -8,8 +8,8 @@
     "build": "tsc",
     "dev": "nodemon lib/server",
     "test": "jest",
-    "compile:watch": "yarn tsc -w",
-    "heroku-postbuild": "yarn run build" 
+    "compile:watch": "npm tsc -w",
+    "heroku-postbuild": "npm run build" 
 },
 "postinstall": "tsc && mv -i -v public lib/ && rm -v -rf server",
   "dependencies": {
